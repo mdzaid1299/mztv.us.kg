@@ -77,12 +77,12 @@ const Header = () => {
           </button>
         </Link>
 
-        <Link to={"/developerPage"}>
+        {/* <Link to={"/developerPage"}>
         <button
             className="text-white text-lg  hover:text-red-400 font-bold  p-5 mr-5"
           >Developer
           </button>
-        </Link>
+        </Link> */}
         <Link to={"/search"}>
       <button
             className="text-white  hover:text-red-400 text-lg  font-bold  p-5 mr-5"
@@ -123,12 +123,12 @@ const Header = () => {
     </button>
   </Link>
 
-  <Link to={"/developerPage"}>
+  {/* <Link to={"/developerPage"}>
   <button
       className="text-white hover:text-red-400 text-lg font-bold  p-5 mx-auto w-full "
     >Developer
     </button>
-  </Link>
+  </Link> */}
   <Link to={"/search"}>
 <button
       className="text-white hover:text-red-400 text-lg font-bold  p-5 mx-auto w-full "

@@ -6,7 +6,7 @@ const Developer = () => {
   return (
     <div>
         <Header/>
-        <DeveloperCard/>
+        {/* <DeveloperCard/> */}
       
     </div>
   )
