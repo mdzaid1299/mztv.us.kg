@@ -13,7 +13,7 @@ const TvPage = () => {
     <div className='bg-stone-900'>
         <Header/>
         <TvShowInfoCard tvShowInfo={tvShow}/>
-        <CastList title="Top Casts" casts={casts}/>
+        {/* <CastList title="Top Casts" casts={casts}/> */}
         <Footer/>
     </div>
   )

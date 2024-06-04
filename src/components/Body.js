@@ -17,7 +17,7 @@ const Body = () => {
   const appRouter = createBrowserRouter([
     {
       path: "/",
-      element: <Login />,
+      element: <Browse />,
       errorElement:<Error/>
     },
     {
