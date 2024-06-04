@@ -27,13 +27,13 @@ const Login = () => {
 
   const handleButtonClick = (e) => {
     e.preventDefault();
-    const message = checkValidData(
-      email.current.value,
-      password.current.value,
-      fullName
-    );
-    setErrormsg(message);
-    if (message) return;
+    // const message = checkValidData(
+    //   email.current.value,
+    //   password.current.value,
+    //   fullName
+    // );
+    // setErrormsg(message);
+    // if (message) return;
 
     if (!isSignInForm) {
       // Sign Up Logic
