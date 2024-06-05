@@ -9,7 +9,7 @@ import { NAV_CROSS_IMG_URL, NAV_IMG_URL } from "../utils/constants";
 import toast from "react-hot-toast";
 
 const Header = () => {
-  const [showLinks,setShowLinks]=useState(false);
+  const [showLinks, setShowLinks] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
@@ -18,7 +18,7 @@ const Header = () => {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
-        toast(user.displayName +" is logged out")
+        toast(user.displayName + " is logged out");
       })
       .catch((error) => {
         // An error happened.
@@ -38,111 +38,103 @@ const Header = () => {
             displayName: displayName,
           })
         );
-        if(window.location.pathname==="/"){
+        if (window.location.pathname === "/") {
           navigate("/browse");
         }
         // ...
       } else {
         // User is signed out
         dispatch(removeUser());
-        if(window.location.pathname!=="/"){
+        if (window.location.pathname !== "/") {
           navigate("/");
         }
       }
     });
   }, []);
+
   return (
     <>
-    <div className="absolute z-20 bg-stone-800 p-2 py-3 opacity-95 shadow-md flex justify-between w-full">
-      <div className=" text-red-500 font-sans text-4xl p-4 ml-4 font-bold">
-        <Link to={"/browse"}>Cinemania</Link>
-      </div>
-        {user && (<><div className="hidden xl:flex xl:flex-row">
-          <Link to={"/browse"}>
-          <button
-            className="text-white hover:text-red-500 text-lg font-bold  p-5 mr-5"
-          >Home
-          </button>
-          </Link>
-        <Link to={"/movies"}>
-        <button
-            className="text-white  hover:text-red-400 text-lg font-bold  p-5 mr-5"
-          >Movies
-          </button>
-        </Link>
-        <Link to={"/tvShow"}>
-        <button
-            className="text-white  hover:text-red-400  text-lg font-bold  p-5 mr-5"
-          >Tv Shows
-          </button>
-        </Link>
-
-        {/* <Link to={"/developerPage"}>
-        <button
-            className="text-white text-lg  hover:text-red-400 font-bold  p-5 mr-5"
-          >Developer
-          </button>
-        </Link> */}
-        <Link to={"/search"}>
-      <button
-            className="text-white  hover:text-red-400 text-lg  font-bold  p-5 mr-5"
-          >Search 🔎
-          </button></Link>
-          <button
-            className="text-white  hover:text-red-400 text-lg font-bold  p-5 mr-5 "
-            onClick={handleSignOut}
-          >
-            Log out
-          </button>
-          </div>
-          <div onClick={()=>setShowLinks(!showLinks)} className="text-white text-lg font-bold  p-5 mr-5 flex xl:hidden">{!showLinks ?(
-            <img className=" h-6" src={NAV_IMG_URL} alt="Nav-Bar"/>
-          ):<img className=" h-6" src={NAV_CROSS_IMG_URL} alt="Nav-Bar-Cross"/>}
-          </div>
+      <div className="absolute z-20 bg-stone-800 p-2 py-2 opacity-95 shadow-md flex justify-between w-full">
+        <div className="text-red-500 font-sans text-3xl p-2 ml-4 font-bold">
+          <Link to={"/browse"}>Cinemania</Link>
+        </div>
+        {user && (
+          <>
+            <div className="hidden xl:flex xl:flex-row">
+              <Link to={"/browse"}>
+                <button className="text-white hover:text-red-500 text-base font-bold p-3 mr-3">
+                  Home
+                </button>
+              </Link>
+              <Link to={"/movies"}>
+                <button className="text-white hover:text-red-400 text-base font-bold p-3 mr-3">
+                  Movies
+                </button>
+              </Link>
+              <Link to={"/tvShow"}>
+                <button className="text-white hover:text-red-400 text-base font-bold p-3 mr-3">
+                  TV Shows
+                </button>
+              </Link>
+              <Link to={"/search"}>
+                <button className="text-white hover:text-red-400 text-base font-bold p-3 mr-3">
+                  Search 🔎
+                </button>
+              </Link>
+              <button
+                className="text-white hover:text-red-400 text-base font-bold p-3 mr-3"
+                onClick={handleSignOut}
+              >
+                Log out
+              </button>
+            </div>
+            <div
+              onClick={() => setShowLinks(!showLinks)}
+              className="text-white text-lg font-bold p-3 mr-3 flex xl:hidden"
+            >
+              {!showLinks ? (
+                <img className="h-6" src={NAV_IMG_URL} alt="Nav-Bar" />
+              ) : (
+                <img className="h-6" src={NAV_CROSS_IMG_URL} alt="Nav-Bar-Cross" />
+              )}
+            </div>
           </>
         )}
-    </div>{user && (<>
-    {showLinks ? (
-      <div className="flex flex-col absolute w-screen z-10  bg-stone-800  pt-24 justify-center mx-auto xl:hidden">
-        <Link to={"/browse"}>
-        <button
-      className="text-white hover:text-red-400 text-lg font-bold p-5 w-full mx-auto"
-    >Home
-    </button>
-        </Link>
-        <Link to={"/movies"}>
-  <button
-      className="text-white hover:text-red-400 text-lg font-bold p-5 w-full mx-auto "
-    >Movies
-    </button>
-  </Link>
-  <Link to={"/tvShow"}>
-  <button
-      className="text-white hover:text-red-400 text-lg font-bold  p-5 w-full mx-auto "
-    >Tv Shows
-    </button>
-  </Link>
-
-  {/* <Link to={"/developerPage"}>
-  <button
-      className="text-white hover:text-red-400 text-lg font-bold  p-5 mx-auto w-full "
-    >Developer
-    </button>
-  </Link> */}
-  <Link to={"/search"}>
-<button
-      className="text-white hover:text-red-400 text-lg font-bold  p-5 mx-auto w-full "
-    >Search
-    </button></Link>
-    <button
-      className="text-white hover:text-red-400 text-lg font-bold  p-5 mx-auto w-full "
-      onClick={handleSignOut}
-    >
-      Log out
-    </button>
       </div>
-    ):""}
-    </>)}
+      {user && (
+        <>
+          {showLinks && (
+            <div className="flex flex-col absolute w-screen z-10 bg-stone-800 pt-16 justify-center mx-auto xl:hidden">
+              <Link to={"/browse"}>
+                <button className="text-white hover:text-red-400 text-lg font-bold p-4 w-full mx-auto">
+                  Home
+                </button>
+              </Link>
+              <Link to={"/movies"}>
+                <button className="text-white hover:text-red-400 text-lg font-bold p-4 w-full mx-auto">
+                  Movies
+                </button>
+              </Link>
+              <Link to={"/tvShow"}>
+                <button className="text-white hover:text-red-400 text-lg font-bold p-4 w-full mx-auto">
+                  TV Shows
+                </button>
+              </Link>
+              <Link to={"/search"}>
+                <button className="text-white hover:text-red-400 text-lg font-bold p-4 w-full mx-auto">
+                  Search
+                </button>
+              </Link>
+              <button
+                className="text-white hover:text-red-400 text-lg font-bold p-4 w-full mx-auto"
+                onClick={handleSignOut}
+              >
+                Log out
+              </button>
+            </div>
+          )}
+        </>
+      )}
     </>
   );
 };
