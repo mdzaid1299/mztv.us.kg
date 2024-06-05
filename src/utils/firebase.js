@@ -1,16 +1,15 @@
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth} from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDOeBPpl0QczgdPZCixxS33LWimU87DT1c",
-  authDomain: "cinemania-gpt.firebaseapp.com",
-  projectId: "cinemania-gpt",
-  storageBucket: "cinemania-gpt.appspot.com",
-  messagingSenderId: "797757782393",
-  appId: "1:797757782393:web:288b48a6569d135dfbd7a8",
-  measurementId: "G-YKVGSPZQ4J"
+  apiKey: "AIzaSyDGyNTya7BglaY8u0XC7RW-MTRxl3-KJik",
+  authDomain: "cinemaiabyzaid.firebaseapp.com",
+  projectId: "cinemaiabyzaid",
+  storageBucket: "cinemaiabyzaid.appspot.com",
+  messagingSenderId: "666278405254",
+  appId: "1:666278405254:web:bf2804e6fe82113be31d07"
 };
 
 
