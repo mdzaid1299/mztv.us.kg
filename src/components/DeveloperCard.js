@@ -42,7 +42,7 @@ const DeveloperCard = () => {
                 </p>
                 <p className="my-4">
                   <span className="text-red-200 text-xl font-semibold my-3">
-                    About CineMix
+                    About CinemixMZ
                   </span>
                   <p className="text-gray-300 break-words my-2">
                     About

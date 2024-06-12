@@ -14,7 +14,7 @@ const Footer = () => {
             </div>
             <div className='w-auto text-center px-4'>
                 <p className='text-gray-300'>
-                CineMix is the premier platform for watching free movies online, but please note you may encounter ads.
+                CinemixMZ is the premier platform for watching free movies online, but please note you may encounter ads.
                 </p>
             </div>
         </div>

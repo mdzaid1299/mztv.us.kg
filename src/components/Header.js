@@ -56,7 +56,7 @@ const Header = () => {
     <>
       <div className="absolute z-20 bg-stone-800 p-2 py-2 opacity-95 shadow-md flex justify-between w-full">
         <div className="text-red-500 font-sans text-3xl p-2 ml-4 font-bold">
-          <Link to={"/browse"}>CineMix</Link>
+          <Link to={"/browse"}>CinemixMZ</Link>
         </div>
         {user && (
           <>
