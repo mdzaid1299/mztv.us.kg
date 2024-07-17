@@ -9,7 +9,7 @@ const Footer = () => {
                     © {date} No-Copyright
                 </p>
                 <p className='text-gray-300 px-4'>
-                    mdzaiduiux@gmail.com
+                    mdzaid.us.kg
                 </p>
             </div>
             <div className='w-auto text-center px-4'>
