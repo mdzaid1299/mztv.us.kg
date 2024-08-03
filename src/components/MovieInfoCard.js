@@ -12,7 +12,7 @@ const MovieInfoCard = ({ movieInfo, trailer }) => {
       return;
     }
 
-    const apiUrl = `https://vidsrc.to/embed/movie/${movieInfo.id}`;
+    const apiUrl = `https://vidsrc.net/embed/movie/${movieInfo.id}`;
     window.open(apiUrl, "_blank");
   };
 

@@ -23,7 +23,7 @@ const TvShowInfoCard = ({ tvShowInfo }) => {
       console.error("TV Show ID is missing");
       return;
     }
-    const apiUrl = `https://vidsrc.to/embed/tv/${tvShowInfo.id}/${season}/${episode}`;
+    const apiUrl = `https://vidsrc.net/embed/tv/${tvShowInfo.id}/${season}/${episode}`;
     window.open(apiUrl, "_blank");
   };
 
