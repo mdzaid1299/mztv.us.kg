@@ -2,24 +2,6 @@ import React, { useState, useEffect } from "react";
 import { IMG_CDN } from "../utils/constants";
 import Loader from "./Loader";
 import toast from "react-hot-toast";
-const AdBlockWarning = ({ onClose }) => {
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm text-center">
-        <h2 className="text-xl font-semibold text-red-600 mb-4">Ad Blocker Detected!</h2>
-        <p className="text-gray-700 mb-6">
-          It looks like you're using an ad blocker. Please disable it to ensure the best experience.
-        </p>
-        <button
-          className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
-          onClick={onClose}
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  );
-};
 
 const VideoPlayer = ({ tvShowId, season, episode, onClose }) => {
   return (
