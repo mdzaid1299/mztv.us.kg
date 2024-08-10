@@ -2,11 +2,29 @@ import React, { useState, useEffect } from "react";
 import { IMG_CDN } from "../utils/constants";
 import Loader from "./Loader";
 import toast from "react-hot-toast";
+const AdBlockWarning = ({ onClose }) => {
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm text-center">
+        <h2 className="text-xl font-semibold text-red-600 mb-4">Ad Blocker Detected!</h2>
+        <p className="text-gray-700 mb-6">
+          It looks like you're using an ad blocker. Please disable it to ensure the best experience.
+        </p>
+        <button
+          className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+          onClick={onClose}
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const VideoPlayer = ({ tvShowId, season, episode, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center">
-      <div className="w-full max-w-4xl">
+      <div className="w-full max-w-2xl mx-4">
         <div className="flex justify-end mb-2">
           <button
             className="text-white p-2 hover:bg-red-700 rounded"
@@ -61,7 +79,7 @@ const TvShowInfoCard = ({ tvShowInfo }) => {
   };
 
   return (
-    <div className="h-auto bg-stone-900 -z-10">
+    <div className="p-4 bg-stone-900 text-white rounded-lg shadow-md">
       {tvShowInfo ? (
         <>
           {showVideo && (
@@ -75,44 +93,27 @@ const TvShowInfoCard = ({ tvShowInfo }) => {
               }}
             />
           )}
-          <div className="mx-auto pt-32 md:pt-28 rounded-lg bg-stone-800 w-8/12 flex flex-wrap">
-            <div className="w-full p-4 md:p-8 mx-auto md:w-1/2">
-              <img
-                className="rounded-lg w-full md:w-3/4"
-                src={IMG_CDN + tvShowInfo.poster_path}
-                alt="tv-show-poster"
-              />
-            </div>
-            <div className="w-full p-4 font-serif md:mx-auto md:w-1/2 text-white">
-              <p className="my-6">
-                <span className="text-3xl my-3 text-red-400">
-                  {tvShowInfo.original_name}
-                </span>
-                <p className="my-2 text-gray-300">
-                  {tvShowInfo.genres.map((genre) => genre.name).join(",")}
-                </p>
+          <div className="flex flex-col md:flex-row items-center">
+            <img
+              className="rounded-lg w-full md:w-48 mb-4 md:mb-0 md:mr-4"
+              src={IMG_CDN + tvShowInfo.poster_path}
+              alt="tv-show-poster"
+            />
+            <div className="flex-1">
+              <h2 className="text-2xl font-semibold">{tvShowInfo.original_name}</h2>
+              <p className="text-gray-400 mb-2">
+                {tvShowInfo.genres.map((genre) => genre.name).join(", ")}
               </p>
-              <p className="my-4">
-                <span className="text-red-200 text-xl font-semibold my-3">
-                  Overview
-                </span>
-                <p className="text-gray-300 break-words my-2">
-                  {tvShowInfo.overview.split(" ", 60).join(" ")}...
-                </p>
+              <p className="text-gray-300 mb-4">
+                {tvShowInfo.overview.split(" ", 25).join(" ")}...
               </p>
-              <p className="my-6 text-gray-300">
+              <p className="text-gray-400 mb-4">
                 First air date: {tvShowInfo.first_air_date}
               </p>
-              <p className="my-6 text-gray-300">
-                Number of seasons: {tvShowInfo.number_of_seasons}
-              </p>
-              <p className="my-6 text-gray-300">
-                Number of episodes: {tvShowInfo.number_of_episodes}
-              </p>
-              <div className="my-6">
-                <label className="text-gray-300">Select Season: </label>
+              <div className="flex flex-wrap mb-4">
+                <label className="text-gray-300 mr-2">Select Season:</label>
                 <select
-                  className="bg-stone-700 text-white p-2 rounded-lg ml-2"
+                  className="bg-stone-700 text-white p-2 rounded-lg"
                   onChange={handleSeasonChange}
                   value={selectedSeason ? selectedSeason.season_number : ""}
                 >
@@ -126,8 +127,8 @@ const TvShowInfoCard = ({ tvShowInfo }) => {
                 </select>
               </div>
               {selectedSeason && (
-                <div className="my-6">
-                  <p className="text-red-200 text-xl font-semibold my-3">
+                <div className="mb-4">
+                  <p className="text-red-200 text-lg font-semibold mb-2">
                     Episodes in Season {selectedSeason.season_number}
                   </p>
                   <div className="flex flex-wrap">
@@ -136,7 +137,7 @@ const TvShowInfoCard = ({ tvShowInfo }) => {
                       (_, i) => (
                         <button
                           key={i}
-                          className="bg-red-700 text-white rounded-lg p-3 m-2 hover:bg-red-800"
+                          className="bg-red-700 text-white rounded-lg px-4 py-2 m-2 hover:bg-red-800"
                           onClick={() =>
                             handleEpisodeClick(
                               selectedSeason.season_number,
