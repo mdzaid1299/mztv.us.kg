@@ -1,19 +1,44 @@
 import React, { useState } from "react";
-import { Get_Youtube_Video_URL1, Get_Youtube_Video_URL2, IMG_CDN } from "../utils/constants";
+import {
+  Get_Youtube_Video_URL1,
+  Get_Youtube_Video_URL2,
+  IMG_CDN,
+} from "../utils/constants";
 import Loader from "./Loader";
 import toast from "react-hot-toast";
 
+const VideoPlayer = ({ movieId, onClose }) => {
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center">
+      <div className="w-full max-w-4xl">
+        <div className="flex justify-end mb-2">
+          <button
+            className="text-white p-2 hover:bg-red-700 rounded"
+            onClick={onClose}
+          >
+            Close
+          </button>
+        </div>
+        <iframe
+          src={`https://vidsrc.net/embed/movie/${movieId}`}
+          className="w-full aspect-video"
+          allowFullScreen
+        ></iframe>
+      </div>
+    </div>
+  );
+};
+
 const MovieInfoCard = ({ movieInfo, trailer }) => {
   const [showTrailer, setShowTrailer] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
 
   const handleWatchNowClick = () => {
     if (!movieInfo?.id) {
       toast.error("Movie ID is missing");
       return;
     }
-
-    const apiUrl = `https://vidsrc.net/embed/movie/${movieInfo.id}`;
-    window.open(apiUrl, "_blank");
+    setShowVideo(true);
   };
 
   return (
@@ -47,6 +72,15 @@ const MovieInfoCard = ({ movieInfo, trailer }) => {
               </div>
             </div>
           )}
+          {showVideo && (
+            <VideoPlayer
+              movieId={movieInfo.id}
+              onClose={() => {
+                setShowVideo(false);
+                toast("Movie player closed");
+              }}
+            />
+          )}
           <div className="mx-auto pt-32 md:pt-28 rounded-lg bg-stone-800 w-8/12 flex flex-wrap">
             <div className="w-full p-4 md:p-8 mx-auto md:w-1/2">
               <img
@@ -73,7 +107,7 @@ const MovieInfoCard = ({ movieInfo, trailer }) => {
                 </p>
               </p>
               <p className="my-6 text-gray-300">
-                Released date :-{movieInfo.release_date}
+                Released date: {movieInfo.release_date}
               </p>
               <div className="flex flex-start">
                 {trailer && (

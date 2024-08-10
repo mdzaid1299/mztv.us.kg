@@ -1,42 +1,86 @@
-import React, { useState, useEffect } from 'react';
-import { IMG_CDN } from '../utils/constants';
-import Loader from './Loader';
+import React, { useState, useEffect } from "react";
+import { IMG_CDN } from "../utils/constants";
+import Loader from "./Loader";
+import toast from "react-hot-toast";
+
+const VideoPlayer = ({ tvShowId, season, episode, onClose }) => {
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center">
+      <div className="w-full max-w-4xl">
+        <div className="flex justify-end mb-2">
+          <button
+            className="text-white p-2 hover:bg-red-700 rounded"
+            onClick={onClose}
+          >
+            Close
+          </button>
+        </div>
+        <iframe
+          src={`https://vidsrc.net/embed/tv/${tvShowId}/${season}/${episode}`}
+          className="w-full aspect-video"
+          allowFullScreen
+        ></iframe>
+      </div>
+    </div>
+  );
+};
 
 const TvShowInfoCard = ({ tvShowInfo }) => {
   const [selectedSeason, setSelectedSeason] = useState(null);
+  const [showVideo, setShowVideo] = useState(false);
+  const [currentEpisode, setCurrentEpisode] = useState(null);
 
   useEffect(() => {
     if (tvShowInfo && tvShowInfo.seasons.length > 0) {
-      const filteredSeasons = tvShowInfo.seasons.filter(season => season.season_number !== 0);
-      const defaultSeason = filteredSeasons.find(season => season.season_number === 1) || filteredSeasons[0];
+      const filteredSeasons = tvShowInfo.seasons.filter(
+        (season) => season.season_number !== 0
+      );
+      const defaultSeason =
+        filteredSeasons.find((season) => season.season_number === 1) ||
+        filteredSeasons[0];
       setSelectedSeason(defaultSeason);
     }
   }, [tvShowInfo]);
 
   const handleSeasonChange = (e) => {
     const seasonNumber = e.target.value;
-    setSelectedSeason(tvShowInfo.seasons.find(season => season.season_number === parseInt(seasonNumber)));
+    setSelectedSeason(
+      tvShowInfo.seasons.find(
+        (season) => season.season_number === parseInt(seasonNumber)
+      )
+    );
   };
 
   const handleEpisodeClick = (season, episode) => {
     if (!tvShowInfo?.id) {
-      console.error("TV Show ID is missing");
+      toast.error("TV Show ID is missing");
       return;
     }
-    const apiUrl = `https://vidsrc.net/embed/tv/${tvShowInfo.id}/${season}/${episode}`;
-    window.open(apiUrl, "_blank");
+    setCurrentEpisode({ season, episode });
+    setShowVideo(true);
   };
 
   return (
     <div className="h-auto bg-stone-900 -z-10">
       {tvShowInfo ? (
         <>
+          {showVideo && (
+            <VideoPlayer
+              tvShowId={tvShowInfo.id}
+              season={currentEpisode.season}
+              episode={currentEpisode.episode}
+              onClose={() => {
+                setShowVideo(false);
+                toast("TV Show player closed");
+              }}
+            />
+          )}
           <div className="mx-auto pt-32 md:pt-28 rounded-lg bg-stone-800 w-8/12 flex flex-wrap">
             <div className="w-full p-4 md:p-8 mx-auto md:w-1/2">
               <img
                 className="rounded-lg w-full md:w-3/4"
                 src={IMG_CDN + tvShowInfo.poster_path}
-                alt="movie-poster"
+                alt="tv-show-poster"
               />
             </div>
             <div className="w-full p-4 font-serif md:mx-auto md:w-1/2 text-white">
@@ -73,7 +117,7 @@ const TvShowInfoCard = ({ tvShowInfo }) => {
                   value={selectedSeason ? selectedSeason.season_number : ""}
                 >
                   {tvShowInfo.seasons
-                    .filter(season => season.season_number !== 0)
+                    .filter((season) => season.season_number !== 0)
                     .map((season) => (
                       <option key={season.id} value={season.season_number}>
                         Season {season.season_number}
@@ -87,15 +131,23 @@ const TvShowInfoCard = ({ tvShowInfo }) => {
                     Episodes in Season {selectedSeason.season_number}
                   </p>
                   <div className="flex flex-wrap">
-                    {Array.from({ length: selectedSeason.episode_count }, (_, i) => (
-                      <button
-                        key={i}
-                        className="bg-red-700 text-white rounded-lg p-3 m-2 hover:bg-red-800"
-                        onClick={() => handleEpisodeClick(selectedSeason.season_number, i + 1)}
-                      >
-                        Episode {i + 1}
-                      </button>
-                    ))}
+                    {Array.from(
+                      { length: selectedSeason.episode_count },
+                      (_, i) => (
+                        <button
+                          key={i}
+                          className="bg-red-700 text-white rounded-lg p-3 m-2 hover:bg-red-800"
+                          onClick={() =>
+                            handleEpisodeClick(
+                              selectedSeason.season_number,
+                              i + 1
+                            )
+                          }
+                        >
+                          Episode {i + 1}
+                        </button>
+                      )
+                    )}
                   </div>
                 </div>
               )}
