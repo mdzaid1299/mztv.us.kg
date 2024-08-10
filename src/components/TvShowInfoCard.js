@@ -79,7 +79,7 @@ const TvShowInfoCard = ({ tvShowInfo }) => {
   };
 
   return (
-    <div className="p-4 bg-stone-900 text-white rounded-lg shadow-md">
+    <div className="p-4 bg-stone-900 text-white rounded-lg shadow-md pt-20"> 
       {tvShowInfo ? (
         <>
           {showVideo && (
