@@ -75,13 +75,13 @@ const TvShowInfoCard = ({ tvShowInfo }) => {
               }}
             />
           )}
-          <div className="flex flex-col md:flex-row items-center">
+      <div className="flex flex-col items-center">
             <img
-              className="rounded-lg w-full md:w-48 mb-4 md:mb-0 md:mr-4"
+              className="rounded-lg w-full md:w-48 mb-4"
               src={IMG_CDN + tvShowInfo.poster_path}
               alt="tv-show-poster"
             />
-            <div className="flex-1">
+            <div className="text-center">
               <h2 className="text-2xl font-semibold">{tvShowInfo.original_name}</h2>
               <p className="text-gray-400 mb-2">
                 {tvShowInfo.genres.map((genre) => genre.name).join(", ")}
@@ -92,8 +92,8 @@ const TvShowInfoCard = ({ tvShowInfo }) => {
               <p className="text-gray-400 mb-4">
                 First air date: {tvShowInfo.first_air_date}
               </p>
-              <div className="flex flex-wrap mb-4">
-                <label className="text-gray-300 mr-2">Select Season:</label>
+              <div className="flex flex-col items-center mb-4">
+                <label className="text-gray-300 mb-2">Select Season:</label>
                 <select
                   className="bg-stone-700 text-white p-2 rounded-lg"
                   onChange={handleSeasonChange}
@@ -113,7 +113,7 @@ const TvShowInfoCard = ({ tvShowInfo }) => {
                   <p className="text-red-200 text-lg font-semibold mb-2">
                     Episodes in Season {selectedSeason.season_number}
                   </p>
-                  <div className="flex flex-wrap">
+                  <div className="flex flex-wrap justify-center">
                     {Array.from(
                       { length: selectedSeason.episode_count },
                       (_, i) => (

@@ -81,13 +81,13 @@ const MovieInfoCard = ({ movieInfo, trailer }) => {
               }}
             />
           )}
-          <div className="flex flex-col md:flex-row items-center">
+          <div className="flex flex-col items-center">
             <img
-              className="rounded-lg w-full md:w-48 mb-4 md:mb-0 md:mr-4"
+              className="rounded-lg w-full md:w-48 mb-4"
               src={IMG_CDN + movieInfo.poster_path}
               alt="movie-poster"
             />
-            <div className="flex-1">
+            <div className="text-center">
               <h2 className="text-2xl font-semibold">{movieInfo.original_title}</h2>
               <p className="text-gray-400 mb-2">
                 {movieInfo.genres.map((genre) => genre.name).join(", ")}
@@ -98,7 +98,7 @@ const MovieInfoCard = ({ movieInfo, trailer }) => {
               <p className="text-gray-400 mb-4">
                 Released date: {movieInfo.release_date}
               </p>
-              <div className="flex space-x-2">
+              <div className="flex justify-center space-x-2">
                 {trailer && (
                   <button
                     onClick={() => {
