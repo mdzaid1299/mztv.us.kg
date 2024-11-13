@@ -42,11 +42,11 @@ const DeveloperCard = () => {
                 </p>
                 <p className="my-4">
                   <span className="text-red-200 text-xl font-semibold my-3">
-                    About CinemixMZ
+                    About MZ Tv
                   </span>
                   <p className="text-gray-300 break-words my-2">
                     About
-                    CineMix: Your ultimate destination for the latest in trending movies, top-rated films, and sizzling TV shows. Dive into a world of cinematic wonders, where exploration knows no bounds. Our intuitive interface, backed by the trusted TMDB API, makes it effortless to explore, search, and watch trailers.
+                    MZ Tv: Your ultimate destination for the latest in trending movies, top-rated films, and sizzling TV shows. Dive into a world of cinematic wonders, where exploration knows no bounds. Our intuitive interface, backed by the trusted TMDB API, makes it effortless to explore, search, and watch trailers.
                   </p>
                 </p>
 

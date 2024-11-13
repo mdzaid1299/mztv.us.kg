@@ -54,12 +54,12 @@ const Login = () => {
         onSubmit={handleButtonClick}
       >
         <h1 className="text-3xl py-4 mb-4 font-bold">Login Formality</h1>
-        <input
+        {/* <input
           ref={fullName}
           type="text"
           placeholder="Full Name"
           className="p-4 my-4 w-full bg-gray-700 hover:bg-gray-700"
-        />
+        /> */}
         <input
           ref={email}
           type="text"
