@@ -34,10 +34,10 @@ const TvShowPage = () => {
   return (
     <div className="h-screen text-white bg-stone-900 font-serif">
       <Header />
-      <div className="pt-24 bg-stone-900 font-serif">
+      <div className="pt-5 bg-stone-900 font-serif">
         {trendingShows?.length > 0 ? (
           <div className="w-full mx-auto bg-stone-900 p-10 pt-20">
-            <p className=" text-3xl text-red-400 font-semibold text-center mb-10">Trending Shows</p>
+            <p className=" text-3xl text-red-400 font-semibold text-center mb-3">Trending Shows</p>
             <div className="flex mx-auto mt-4 p-2 justify-between flex-wrap">
               {trendingShows?.map((show) => {
                 return (

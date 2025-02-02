@@ -7,6 +7,7 @@ import usePopular from "../customHooks/usePopular";
 import useTopRated from "../customHooks/useTopRated";
 import useUpComing from "../customHooks/useUpcoming";
 import Footer from "./Footer";
+import Welcome from "./Welcome";
 
 const Browse = () => {
   useNowPlayingMovies();
@@ -16,9 +17,8 @@ const Browse = () => {
   return (
     <div className="bg-black">
       <Header />
-      <VideoContainer />
-      <MovieContainer/>
-      <Footer/>
+      <Welcome />
+      <Footer />
     </div>
   );
 };

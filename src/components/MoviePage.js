@@ -36,10 +36,10 @@ const MoviePage = () => {
   return (
     <div className="h-screen text-white bg-stone-900 font-serif">
       <Header />
-      <div className="pt-24 bg-stone-900">
+      <div className="pt-3 bg-stone-900">
         {trendingMovies?.length > 0 ? (
           <div className="w-full mx-auto bg-stone-900 p-10 pt-20">
-            <p className=" text-3xl font-semibold text-red-300 mb-10 text-center"> Movies Trending </p>
+            <p className=" text-3xl font-semibold text-red-300 mb-4 text-center"> Movies Trending </p>
             <div className="flex mx-auto mt-4 p-2 justify-between flex-wrap">
               {trendingMovies?.map((movie) => {
                 return (
