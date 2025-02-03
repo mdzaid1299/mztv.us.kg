@@ -34,14 +34,11 @@ const SearchBox = () => {
       const movies = results.filter(
         (item) => item.media_type === "movie" && item.poster_path
       );
-      const persons = results.filter(
-        (item) => item.media_type === "person" && item.profile_path
-      );
       const tvShows = results.filter(
         (item) => item.media_type === "tv" && item.poster_path
       );
 
-      setSearchResults([...movies, ...persons, ...tvShows]);
+      setSearchResults([...movies, ...tvShows]);
     } catch (error) {
       console.error("Error fetching search results:", error);
     }
@@ -49,28 +46,33 @@ const SearchBox = () => {
 
   return (
     <div className="relative w-full max-w-2xl mx-auto">
-      {/* Increased max width to 2xl and centered */}
       <input
         type="text"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="w-full p-2 text-sm md:text-base bg-stone-800 border-b-0 rounded-md min-w-[300px] md:min-w-[500px]"
-        /* Increased minimum width for larger input box */
-        placeholder="Search for movies, TV shows, or people..."
+        placeholder="Search for movies or TV shows..."
       />
       {searchResults.length > 0 && (
         <div className="absolute bg-black w-full max-h-60 overflow-y-auto shadow-lg mt-1 z-10">
           {searchResults.map((item) => (
-            <Link to={`/movieInfo/${item.id}`} key={item.id}>
-            <div className="flex items-center p-2 hover:bg-gray-700 cursor-pointer">
+            <a
+              href={
+                item.media_type === "movie"
+                  ? `/movieInfo/${item.id}`
+                  : `/tvShow/${item.id}`
+              }
+              key={item.id}
+            >
+              <div className="flex items-center p-2 hover:bg-gray-700 cursor-pointer">
                 <img
-                  src={IMG_CDN + (item.poster_path || item.profile_path)}
+                  src={IMG_CDN + item.poster_path}
                   alt={item.title || item.name}
                   className="w-12 h-12 object-cover rounded-md mr-3"
                 />
                 <p className="text-white">{item.title || item.name}</p>
               </div>
-            </Link>
+            </a>
           ))}
         </div>
       )}
