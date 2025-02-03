@@ -1,4 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { changeLanguage } from "../utils/configReduxSlice";
 import lang from "../utils/LanguageConstant";
 import Header from "./Header";
 import {
@@ -6,191 +9,139 @@ import {
   LOGIN_BACKGROUND,
   Search_Api_URL1,
   Search_Api_URL2,
-  Supported_Languages,
   TMDB_API_OPTIONS,
 } from "../utils/constants";
-import { Link } from "react-router-dom";
 
-import { useDispatch, useSelector } from "react-redux";
-import { changeLanguage } from "../utils/configReduxSlice";
-
-const GptSearhPage = () => {
+const GptSearchPage = () => {
   const langKey = useSelector((store) => store.config.lang);
-  const searchText = useRef(null);
   const dispatch = useDispatch();
+  const searchText = useRef(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [person, setPerson] = useState([]);
+  const [movies, setMovies] = useState([]);
+  const [tvShows, setTvShows] = useState([]);
 
-  const [person, setPerson] = useState(null);
-  const [movies, setMovies] = useState(null);
-  const [tvShows, setTvShows] = useState(null);
+  useEffect(() => {
+    const savedSearch = localStorage.getItem("searchQuery");
+    const savedResults = localStorage.getItem("searchResults");
+    if (savedSearch && savedResults) {
+      setSearchQuery(savedSearch);
+      const parsedResults = JSON.parse(savedResults);
+      setMovies(parsedResults.movies);
+      setPerson(parsedResults.person);
+      setTvShows(parsedResults.tvShows);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (searchQuery) {
+      getSearchItems(searchQuery);
+    }
+  }, [searchQuery]);
 
   const getSearchItems = async (searchData) => {
+    // Encode spaces properly for API call
+    const encodedSearchData = encodeURIComponent(searchData);
     const data = await fetch(
-      Search_Api_URL1 + searchData + Search_Api_URL2,
+      Search_Api_URL1 + encodedSearchData + Search_Api_URL2,
       TMDB_API_OPTIONS
     );
     const json = await data.json();
-    const movies = await json.results.filter((movie) => {
-      return movie.media_type === "movie";
-    });
-    const movieData = await movies?.filter((movie) => {
-      return movie.poster_path !== null;
-    });
-    const person = await json.results.filter((person) => {
-      return person.media_type === "person";
-    });
-    const personData = await person?.filter((person) => {
-      return person.profile_path !== null;
-    });
-    const tv = await json.results.filter((tv) => {
-      return tv.media_type === "tv";
-    });
-    const tvData = await tv?.filter((tv) => {
-      return tv.poster_path !== null;
-    });
+    const movieData = json.results.filter(
+      (movie) => movie.media_type === "movie" && movie.poster_path
+    );
+    const personData = json.results.filter(
+      (p) => p.media_type === "person" && p.profile_path
+    );
+    const tvData = json.results.filter(
+      (tv) => tv.media_type === "tv" && tv.poster_path
+    );
+
     setMovies(movieData);
     setPerson(personData);
     setTvShows(tvData);
-  };
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    const searchData = searchText.current.value.split(" ").join("%20");
-    getSearchItems(searchData);
-  };
-
-  const handleLanguageChange = (e) => {
-    dispatch(changeLanguage(e.target.value));
+    localStorage.setItem("searchQuery", searchData);
+    localStorage.setItem(
+      "searchResults",
+      JSON.stringify({ movies: movieData, person: personData, tvShows: tvData })
+    );
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-900 text-white">
       <img
-        className="fixed object-cover h-screen w-full  -z-10 opacity-75"
+        className="fixed object-cover h-screen w-full -z-10 opacity-50"
         src={LOGIN_BACKGROUND}
-        alt="Login-Background Img"
+        alt="Background"
       />
       <Header />
 
- 
-      <div className=" w-full pt-40 text-white">
-      <div className="flex justify-center mb-10">
-        <h1 className="text-3xl font-bold m-2 opacity-95">Choose your Language : </h1>
-        <select
-          className="p-2 bg-black text-white m-2 rounded-3xl"
-          onChange={handleLanguageChange}
-        >
-          {Supported_Languages.map((lang) => (
-            <option key={lang.identifier} value={lang.identifier}>
-              {lang.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-        <form
-          className="bg-black w-11/12 md:w-8/12 mx-auto border rounded-md"
-          onSubmit={(e) => e.preventDefault()}
-        >
+      <div className="w-full pt-40">
+        <div className="flex justify-center mb-6">
           <input
             type="text"
             ref={searchText}
-            className="w-10/12 md:w-9/12 p-3 text-sm md:text-base bg-stone-800  border-b-0"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-10/12 md:w-8/12 p-3 text-lg bg-gray-800 border border-gray-600 rounded-lg focus:outline-none focus:border-red-600"
             placeholder={lang[langKey].gptSearchPlaceholder}
           />
-          <button
-            onClick={handleSearch}
-            className="bg-red-600 w-2/12 md:w-3/12 p-3 border text-sm md:text-base font-semibold rounded"
-          >
-            {lang[langKey].search}
-          </button>
-        </form>
+        </div>
       </div>
-      <div>
-        {movies && (
-          <div className="mx-auto w-10/12">
-            <p className="text-white text-center mt-10 font-semibold text-4xl m-2">
-              {movies.length !== 0 ? "Movies" : ""}
-            </p>
-            <div className="flex flex-wrap justify-center md:justify-start">
-              {movies?.map((movie) => {
-                return (
-                  <Link to={"/movieInfo/" + movie.id} key={movie.id}>
-                    <div className="p-2 w-40">
-                      <img
-                        className="w-full rounded-lg"
-                        alt="movie-img"
-                        src={IMG_CDN + movie.poster_path}
-                      />
-                      <p className="text-center text-white break-words">
-                        {movie.title}
-                      </p>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
+
+      <div className="container mx-auto px-4">
+        {movies.length > 0 && (
+          <CategorySection
+            title="Movies"
+            data={movies}
+            linkPath="/movieInfo/"
+          />
         )}
-        {tvShows && (
-          <div className="mx-auto w-10/12">
-            <p className="text-white text-center mt-10 font-semibold text-4xl m-2">
-              {tvShows.length !== 0 ? "TV Shows" : ""}
-            </p>
-            <div className="flex flex-wrap justify-start">
-              {tvShows?.map((tvShow) => {
-                return (
-                  <Link to={"/tvShow/" + tvShow.id} key={tvShow.id}>
-                    <div className="p-2 w-40">
-                      <img
-                        className="w-full rounded-lg"
-                        alt="movie-img"
-                        src={IMG_CDN + tvShow.poster_path}
-                      />
-                      <p className="text-center text-white break-words">
-                        {tvShow.original_name}
-                      </p>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
+        {tvShows.length > 0 && (
+          <CategorySection
+            title="TV Shows"
+            data={tvShows}
+            linkPath="/tvShow/"
+          />
         )}
-        {person && (
-          <div className="mx-auto w-10/12">
-            <p className="text-red-200 text-center mt-10 font-semibold text-4xl m-2">
-              {person.length !== 0 ? "People" : ""}
-            </p>
-            <div className="flex flex-wrap justify-start">
-              {person?.map((p) => {
-                return (
-                  <Link to={"/person/" + p.id} key={p.id}>
-                    <div className="p-2 w-40">
-                      <img
-                        className="w-full rounded-lg"
-                        alt="movie-img"
-                        src={IMG_CDN + p.profile_path}
-                      />
-                      <p className="text-center text-white break-words">
-                        {p.original_name}
-                      </p>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
+        {person.length > 0 && (
+          <CategorySection title="People" data={person} linkPath="/person/" />
         )}
-        {movies?.length === 0 &&
-          tvShows?.length === 0 &&
-          person?.length === 0 && (
-            <div className="text-center text-4xl text-white">
-              No result found
-            </div>
+
+        {movies.length === 0 &&
+          tvShows.length === 0 &&
+          person.length === 0 &&
+          searchQuery && (
+            <p className="text-center text-2xl text-gray-300 mt-10">
+              No results found
+            </p>
           )}
       </div>
     </div>
   );
 };
 
-export default GptSearhPage;
+const CategorySection = ({ title, data, linkPath }) => (
+  <div className="mt-10">
+    <h2 className="text-center text-3xl font-semibold text-red-500">{title}</h2>
+    <div className="flex flex-wrap justify-center gap-4 mt-4">
+      {data.map((item) => (
+        <Link to={`${linkPath}${item.id}`} key={item.id}>
+          <div className="w-40 p-2 hover:scale-105 transition transform duration-200">
+            <img
+              className="w-full rounded-lg shadow-lg"
+              alt="poster"
+              src={IMG_CDN + (item.poster_path || item.profile_path)}
+            />
+            <p className="text-center text-sm mt-2">
+              {item.title || item.original_name}
+            </p>
+          </div>
+        </Link>
+      ))}
+    </div>
+  </div>
+);
+
+export default GptSearchPage;
