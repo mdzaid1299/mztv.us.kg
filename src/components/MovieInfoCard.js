@@ -9,17 +9,17 @@ import Loader from "./Loader";
 import toast from "react-hot-toast";
 
 const VideoPlayer = ({ movieId, onClose }) => {
-  const [source, setSource] = useState("autoembed");
+  const [source, setSource] = useState("vidsrcICU");
   const [loading, setLoading] = useState(true);
 
   const sources = [
+    { id: "vidsrcICU", name: "VidSrc ICU" },
     { id: "autoembed", name: "Autoembed" },
     { id: "vidsrc", name: "VidSrc" },
     { id: "videasy", name: "Videasy" },
     { id: "vidsrcRip", name: "VidSrc Rip" },
     { id: "embedSu", name: "Embed Su" },
     { id: "vidsrcCc", name: "VidSrc CC" },
-    { id: "vidsrcICU", name: "VidSrc ICU" },
     { id: "warezcdn", name: "WarezCDN" },
     { id: "primewireTMDB", name: "PrimeWire TMDB" },
     { id: "vidsrcXYZTMDB", name: "VidSrc XYZ TMDB" },
